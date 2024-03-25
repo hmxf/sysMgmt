@@ -30,6 +30,3 @@ sed -i 's/xSoft.sh 0 26/xSoft.sh 4 26/g' install-sss.sh
 
 sed -i 's/xPWR.sh 0 5 12/xPWR.sh 4 5 12/g' x729-pwr.service
 ```
-> echo "alias x728off='sudo /usr/local/bin/xSoft.sh 0 26'" >>   ~/.bashrc
-
-> echo "alias x728off='sudo /usr/local/bin/xSoft.sh 0 16'" >>   ~/.bashrc
