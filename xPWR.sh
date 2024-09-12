@@ -4,7 +4,7 @@
 
 # 确保有足够的参数被传入  
 if [ "$#" -ne 3 ]; then  
-  echo "Usage: $0 <pwm_chip> <shutdown_pin> <boot_pin>"  
+  echo "Usage: $0 <gpio_chip> <shutdown_pin> <boot_pin>"  
   exit 1  
 fi  
 
@@ -15,7 +15,7 @@ BOOT=$3
 # 检查传入的参数是否为整数
 re='^[0-9\.]+$'
 if ! [[ $PWMCHIP =~ $re ]] ; then
-   echo "error: pwm_chip is not a number" >&2; exit 1
+   echo "error: gpio_chip is not a number" >&2; exit 1
 fi
 
 if ! [[ $SHUTDOWN =~ $re ]] ; then

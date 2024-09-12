@@ -4,7 +4,6 @@ Description=Run Hardware Power Management & Safe Shutdown daemon
 [Service]
 Type=simple
 ExecStart=/usr/local/bin/xPWR.sh 0 5 12
-#ExecStart=/usr/local/bin/x729-pwr.sh
 Restart=always
 
 User=root
