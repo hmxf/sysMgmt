@@ -8,7 +8,7 @@ if [ "$#" -ne 2 ]; then
     exit 1
 fi
 
-PWMCHIP=$1
+GPIOCHIP=$1
 BUTTON=$2
 
 SLEEP=2
@@ -16,7 +16,7 @@ SLEEP=2
 # 检查传入的参数是否为整数
 
 re='^[0-9\.]+$'
-if ! [[ $PWMCHIP =~ $re ]] ; then
+if ! [[ $GPIOCHIP =~ $re ]] ; then
    echo "error: gpio_chip is not a number" >&2; exit 1
 fi
 
@@ -26,10 +26,10 @@ fi
 
 echo "Your device will be shutting down in $SLEEP seconds..."
 
-gpioset $PWMCHIP $BUTTON=1
+gpioset $GPIOCHIP $BUTTON=1
 
 sleep $SLEEP
 
 # Restore GPIO
 # This step is necessary, otherwise you will have to press the onboard button twice to turn on the device, and the same applies to the AUTO ON function.
-gpioset $PWMCHIP $BUTTON=0
+gpioset $GPIOCHIP $BUTTON=0
