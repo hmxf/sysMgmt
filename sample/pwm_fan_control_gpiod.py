@@ -6,8 +6,8 @@ import subprocess
 import threading
 
 # Pelase change to gpiochip4 if you are it on ubuntu 24.04 server
-#chipname = "gpiochip4"
-chipname = "gpiochip0"
+chipname = "gpiochip4"
+# chipname = "gpiochip0"
 servo_line_offset = 13  # 替代使用 BCM 13 的 GPIO 引脚
 
 # 打开 GPIO 芯片并请求 PWM 引脚
