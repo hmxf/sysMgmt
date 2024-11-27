@@ -5,7 +5,8 @@ import time
 import subprocess
 import threading
 
-# 定义 GPIO 参数
+# Pelase change to gpiochip4 if you are it on ubuntu 24.04 server
+#chipname = "gpiochip4"
 chipname = "gpiochip0"
 servo_line_offset = 13  # 替代使用 BCM 13 的 GPIO 引脚
 
@@ -14,7 +15,7 @@ chip = gpiod.Chip(chipname)
 servo_line = chip.get_line(servo_line_offset)
 servo_line.request(consumer="fan_controller", type=gpiod.LINE_REQ_DIR_OUT)
 
-# 模拟 PWM 功能
+# Simulate PWM function
 class SoftwarePWM:
     def __init__(self, line, frequency):
         self.line = line
@@ -24,11 +25,9 @@ class SoftwarePWM:
         self.running = False
 
     def change_duty_cycle(self, duty_cycle):
-        """更新占空比（百分比）"""
         self.duty_cycle = max(0, min(100, duty_cycle))  # 确保占空比在 0 到 100 之间
 
     def start(self):
-        """开始模拟 PWM 信号"""
         self.running = True
         while self.running:
             if self.duty_cycle > 0:
@@ -43,7 +42,6 @@ class SoftwarePWM:
                 time.sleep(self.period)  # 如果 duty_cycle 为 0，则保持低电平
 
     def stop(self):
-        """停止输出"""
         self.running = False
         self.line.set_value(0)
 
@@ -54,7 +52,7 @@ def get_temp():
     try:
         return float(temp_str.split('=')[1].split('\'')[0])
     except (IndexError, ValueError):
-        raise RuntimeError('无法获取温度')
+        raise RuntimeError('DO NOT GET temperature')
 
 # 创建 PWM 控制对象
 fan_pwm = SoftwarePWM(servo_line, frequency=200)
@@ -85,7 +83,7 @@ try:
             fan_pwm.change_duty_cycle(0)  # 关闭风扇
         time.sleep(5)  # 每隔 5 秒调整一次占空比
 except KeyboardInterrupt:
-    print("退出...")
+    print("QUIT...")
 finally:
     fan_pwm.stop()  # 停止 PWM
     pwm_thread.join()  # 等待 PWM 线程结束
