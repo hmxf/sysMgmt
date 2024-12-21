@@ -4,12 +4,8 @@
 cd ~
 git clone https://github.com/openthread/ot-br-posix.git --depth 1
 
-# Configure NPM to install packages globally
-sudo apt-get install --no-install-recommends -y nodejs npm
-mkdir ~/.npm-global
-npm config set prefix '~/.npm-global'
-echo "export PATH=~/.npm-global/bin:$PATH" >> ~/.bashrc && source ~/.bashrc
-npm list -g --depth=0
+# Configure NPM Mirror
+npm config set registry https://registry.npmmirror.com
 
 # Prepare and install OTBR
 cd ot-br-posix
