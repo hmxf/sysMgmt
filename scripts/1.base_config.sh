@@ -14,23 +14,23 @@ sudo apt install -y gpiod python3-smbus python3-rpi.gpio
 
 echo "Add system configurations:"
 
-SYSTEM_CONFIG=$(cat /boot/firmware/config.txt | grep dtoverlay)
+SYSTEM_CONFIG=$(grep "dtoverlay" /boot/firmware/config.txt)
 
-if ! grep -q "dtoverlay=pwm-2chan,pin2=13,func2=4" "$SYSTEM_CONFIG"; then
+if ! echo "$SYSTEM_CONFIG" | grep -q "dtoverlay=pwm-2chan,pin2=13,func2=4"; then
     echo "dtoverlay=pwm-2chan,pin2=13,func2=4" | sudo tee -a /boot/firmware/config.txt
     echo "'dtoverlay=pwm-2chan,pin2=13,func2=4' has been added in the config file."
 else
     echo "'dtoverlay=pwm-2chan,pin2=13,func2=4' already exists in the config file."
 fi
 
-if ! grep -q "dtoverlay=i2c-rtc,ds1307" "$SYSTEM_CONFIG"; then
+if ! echo "$SYSTEM_CONFIG" | grep -q "dtoverlay=i2c-rtc,ds1307"; then
     echo "dtoverlay=i2c-rtc,ds1307" | sudo tee -a /boot/firmware/config.txt
     echo "'dtoverlay=i2c-rtc,ds1307' has been added in the config file."
 else
     echo "'dtoverlay=i2c-rtc,ds1307' already exists in the config file."
 fi
 
-if ! grep -q "usb_max_current_enable=1" "$SYSTEM_CONFIG"; then
+if ! echo "$SYSTEM_CONFIG" | grep -q "dtoverlay=pwm-2chan,pin2=13,func2=4"; then
     echo "usb_max_current_enable=1" | sudo tee -a /boot/firmware/config.txt
     echo "'usb_max_current_enable=1' has been added in the config file."
 else
@@ -39,7 +39,7 @@ fi
 
 PSU_MAX_CURRENT=$(sudo rpi-eeprom-config | grep PSU_MAX)
 
-if ! grep -q "PSU_MAX_CURRENT=5000" "$PSU_MAX_CURRENT"; then
+if ! echo "$PSU_MAX_CURRENT" | grep -q "PSU_MAX_CURRENT=5000"; then
     echo "PSU_MAX_CURRENT=5000 did not exist in the config file. Please add it manually."
     read -p "Press enter to open editor, then add 'PSU_MAX_CURRENT=5000' to it(3)."
     read -p "Press enter to open editor, then add 'PSU_MAX_CURRENT=5000' to it(2)."
