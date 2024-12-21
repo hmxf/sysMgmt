@@ -27,7 +27,7 @@ if [ -f "$file_path" ]; then
 fi
 
 # Remove the xoff allias on .bashrc file
-sudo sed -i '/x729off/d' ~/.bashrc
+sudo sed -i '/safeSHTDN/d' ~/.bashrc
 source ~/.bashrc
 
 file_path="/usr/local/bin/xSoft.sh"
