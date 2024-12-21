@@ -6,6 +6,7 @@ sudo mv /etc/apt/sources.list /etc/apt/sources.list.orig
 sudo cp -f ./sources.list /etc/apt/
 sudo mv /etc/apt/sources.list.d/raspi.list /etc/apt/sources.list.d/raspi.list.orig
 sudo cp -f ./raspi.list /etc/apt/sources.list.d/
+sudo cp -f ./no-bookworm-firmware.conf /etc/apt/apt.conf.d/
 
 sudo apt update -y && sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y
 sudo apt upgrade -y raspberrypi-ui-mods
@@ -13,7 +14,7 @@ sudo apt install -y gpiod python3-smbus python3-rpi.gpio
 
 echo "Add system configurations:"
 
-SYSTEM_CONFIG=$(cat /boot/firmware/config.txt)
+SYSTEM_CONFIG=$(cat /boot/firmware/config.txt | grep dtoverlay)
 
 if ! grep -q "dtoverlay=pwm-2chan,pin2=13,func2=4" "$SYSTEM_CONFIG"; then
     sudo echo "dtoverlay=pwm-2chan,pin2=13,func2=4" >> /boot/firmware/config.txt
