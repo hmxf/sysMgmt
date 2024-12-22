@@ -1,7 +1,10 @@
 #!/bin/bash
 
 # Load iptables kernel module
-sudo modprobe ip6table_filter
+sudo cp -f ip6table-filter.service /lib/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable ip6table-filter.service
+sudo systemctl start ip6table-filter.service
 
 # Pull the latest OTBR Docker image
 docker pull openthread/otbr:latest

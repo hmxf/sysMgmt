@@ -1,0 +1,11 @@
+[Unit]
+Description=Load ip6table_filter module
+Before=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/modprobe ip6table_filter
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
