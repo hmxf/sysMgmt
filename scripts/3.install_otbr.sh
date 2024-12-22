@@ -49,11 +49,13 @@ else
     exit 1
 fi
 
+# Create log directory and log file
+mkdir -p ~/.log
 TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 LOG_FILE="~/.log/otbr_$TIMESTAMP.log"
 
 # Run command in background with screen, redirect outputs to log file
-screen -dmS otbr_session -L -Logfile $LOG_FILEbash -c 'docker run --restart=always --sysctl "net.ipv6.conf.all.disable_ipv6=0 net.ipv4.conf.all.forwarding=1 net.ipv6.conf.all.forwarding=1" -p 8080:80 --dns=127.0.0.1 -it --volume /dev/$TTY_DEVICE:/dev/$TTY_DEVICE --privileged openthread/otbr --radio-url spinel+hdlc+uart:///dev/$TTY_DEVICE'
+screen -dmS otbr_session -L -Logfile $LOG_FILE bash -c 'docker run --restart=always --sysctl "net.ipv6.conf.all.disable_ipv6=0 net.ipv4.conf.all.forwarding=1 net.ipv6.conf.all.forwarding=1" -p 8080:80 --dns=127.0.0.1 -it --volume /dev/$TTY_DEVICE:/dev/$TTY_DEVICE --privileged openthread/otbr --radio-url spinel+hdlc+uart:///dev/$TTY_DEVICE'
 
 echo "OTBR Docker container is running in the background. Log file: $LOG_FILE"
 echo "Use 'screen -r otbr_session' to attach to the session and observe the output."
