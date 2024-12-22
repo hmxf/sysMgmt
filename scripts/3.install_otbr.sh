@@ -3,6 +3,9 @@
 # Load iptables kernel module
 sudo modprobe ip6table_filter
 
+# Pull the latest OTBR Docker image
+docker pull openthread/otbr:latest
+
 # Fetch ttyACM device list
 TTY_DEVICES=$(ls /dev | grep ttyACM)
 
