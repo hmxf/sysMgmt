@@ -58,4 +58,3 @@ LOG_FILE="/home/pi/.log/otbr_$TIMESTAMP.log"
 docker run --restart=always --sysctl "net.ipv6.conf.all.disable_ipv6=0" --sysctl "net.ipv4.conf.all.forwarding=1" --sysctl "net.ipv6.conf.all.forwarding=1" -p 8080:80 --dns=127.0.0.1 -d --volume /dev/$TTY_DEVICE:/dev/$TTY_DEVICE --privileged openthread/otbr --radio-url spinel+hdlc+uart:///dev/$TTY_DEVICE | tee $LOG_FILE &
 
 echo "OTBR Docker container is running in the background. Log file: $LOG_FILE"
-echo "Use 'screen -r otbr_session' to attach to the session and observe the output."
