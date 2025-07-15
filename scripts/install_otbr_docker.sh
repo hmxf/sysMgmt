@@ -59,7 +59,7 @@ docker pull openthread/otbr:latest
 
 # Run command in background with screen, redirect outputs to log file
 # docker run --restart=always --sysctl "net.ipv6.conf.all.disable_ipv6=0" --sysctl "net.ipv4.conf.all.forwarding=1" --sysctl "net.ipv6.conf.all.forwarding=1" -p 8080:80 --dns=127.0.0.1 -d --volume /dev/$TTY_DEVICE:/dev/$TTY_DEVICE --privileged openthread/otbr --radio-url spinel+hdlc+uart:///dev/$TTY_DEVICE | tee $LOG_FILE &
-docker run --restart=always --sysctl "net.ipv6.conf.all.disable_ipv6=0" --sysctl "net.ipv4.conf.all.forwarding=1" --sysctl "net.ipv6.conf.all.forwarding=1" -p 8080:80 --dns=127.0.0.1 -d --volume /dev/ttyACM0:/dev/ttyACM0 --privileged openthread/otbr --radio-url spinel+hdlc+uart:///dev/ttyACM0 | tee /home/pi/.log/otbr.log &
+docker run --restart=always --sysctl "net.ipv6.conf.all.disable_ipv6=0" --sysctl "net.ipv4.conf.all.forwarding=1" --sysctl "net.ipv6.conf.all.forwarding=1" -p 8080:80 --dns=127.0.0.1 -d --volume /dev/ttyACM0:/dev/ttyACM0 --privileged openthread/otbr --radio-url spinel+hdlc+uart:///dev/ttyACM0 | tee /home/$(whoami)/.log/otbr.log &
 
 # echo "OTBR Docker container is running in the background. Log file: $LOG_FILE"
 echo "OTBR Docker container is running in the background."
