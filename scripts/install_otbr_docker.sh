@@ -53,9 +53,11 @@ docker pull openthread/otbr:latest
 # fi
 
 # Create log directory and log file
-# mkdir -p /home/pi/.log
+mkdir -p /home/$(whoami)/.log
 # TIMESTAMP=$(date +"%Y%m%d%H%M%S")
-# LOG_FILE="/home/pi/.log/otbr_$TIMESTAMP.log"
+# LOG_FILE="/home/$(whoami)/.log/otbr_$TIMESTAMP.log"
+touch /home/$(whoami)/.log/otbr.log
+LOG_FILE="/home/$(whoami)/.log/otbr.log"
 
 # Run command in background with screen, redirect outputs to log file
 # docker run --restart=always --sysctl "net.ipv6.conf.all.disable_ipv6=0" --sysctl "net.ipv4.conf.all.forwarding=1" --sysctl "net.ipv6.conf.all.forwarding=1" -p 8080:80 --dns=127.0.0.1 -d --volume /dev/$TTY_DEVICE:/dev/$TTY_DEVICE --privileged openthread/otbr --radio-url spinel+hdlc+uart:///dev/$TTY_DEVICE | tee $LOG_FILE &
