@@ -56,15 +56,17 @@ docker pull openthread/otbr:latest
 mkdir -p /home/$(whoami)/.log
 # TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 # LOG_FILE="/home/$(whoami)/.log/otbr_$TIMESTAMP.log"
-touch /home/$(whoami)/.log/otbr.log
 LOG_FILE="/home/$(whoami)/.log/otbr.log"
+touch $LOG_FILE
 
 # Run command in background with screen, redirect outputs to log file
 # docker run --restart=always --sysctl "net.ipv6.conf.all.disable_ipv6=0" --sysctl "net.ipv4.conf.all.forwarding=1" --sysctl "net.ipv6.conf.all.forwarding=1" -p 8080:80 --dns=127.0.0.1 -d --volume /dev/$TTY_DEVICE:/dev/$TTY_DEVICE --privileged openthread/otbr --radio-url spinel+hdlc+uart:///dev/$TTY_DEVICE | tee $LOG_FILE &
-docker run --restart=always --sysctl "net.ipv6.conf.all.disable_ipv6=0" --sysctl "net.ipv4.conf.all.forwarding=1" --sysctl "net.ipv6.conf.all.forwarding=1" -p 8080:80 --dns=127.0.0.1 -d --volume /dev/ttyACM0:/dev/ttyACM0 --privileged openthread/otbr --radio-url spinel+hdlc+uart:///dev/ttyACM0 | tee /home/$(whoami)/.log/otbr.log &
+docker run --restart=always --name otbr --sysctl "net.ipv6.conf.all.disable_ipv6=0" --sysctl "net.ipv4.conf.all.forwarding=1" --sysctl "net.ipv6.conf.all.forwarding=1" -p 8080:80 --dns=127.0.0.1 -d --volume /dev/ttyACM0:/dev/ttyACM0 --privileged openthread/otbr --radio-url spinel+hdlc+uart:///dev/ttyACM0 | tee /home/$(whoami)/.log/otbr.log &
+sleep 5
 
-# echo "OTBR Docker container is running in the background. Log file: $LOG_FILE"
-echo "OTBR Docker container is running in the background."
+echo "OTBR Docker container is running in the background. Log file: $LOG_FILE"
+# echo "OTBR Docker container is running in the background."
 echo "Use 'docker ps -a' to verify if container was running."
-echo "Use 'docker exec -it <docker instance name> /bin/bash' to access container."
-echo "Use 'docker logs <docker instance name>' to view container logs."
+echo "Use 'docker exec -it otbr /bin/bash' to access container."
+echo "Use 'docker exec -it otbr ot-ctl' to start ot-ctl CLI."
+echo "Use 'docker logs otbr' to view container logs."
