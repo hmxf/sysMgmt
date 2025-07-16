@@ -1,0 +1,16 @@
+services:
+  otbr:
+    image: openthread/border-router
+    container_name: otbr
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - /var/lib/otbr:/data
+      - ./ot-net-conf.sh:/data/ot-net-conf.sh
+    env_file:
+      - otbr-env.list
+    restart: always
