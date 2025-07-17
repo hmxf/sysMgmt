@@ -55,13 +55,9 @@
 
 5. Configure the OTBR network settings
 
-    1. Create `ot-net-conf.sh` and make OpenThread Border Router's Network Configurations
+    1. Configure OpenThread Border Router's network parameters
 
-    2. Assign host ipv6 address such as fd11:22::1:1:1:2333 for wpan0 interface
-        
-        ```bash
-        sudo ip -6 addr add fd11:22::1:1:1:2333 dev wpan0
-        ```
+    2. Assign host ipv6 address
 
 6. Install OTBR Monitor
 

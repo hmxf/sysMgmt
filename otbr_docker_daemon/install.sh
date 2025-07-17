@@ -2,7 +2,9 @@
 
 set -euxo pipefail
 
+sudo mkdir -p /var/log
 sudo touch /var/log/otbr_monitor.log
+sudo chown $USER:$USER /var/log/otbr_monitor.log
 
 sudo cp ./check_otbr_health.sh /usr/local/bin
 sudo cp ./monitor_otbr.sh /usr/local/bin

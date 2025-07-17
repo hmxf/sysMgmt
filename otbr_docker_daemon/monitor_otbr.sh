@@ -2,9 +2,8 @@
 
 set -euxo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-HEALTH_CHECK_SCRIPT="$SCRIPT_DIR/check_otbr_health.sh"
-RESTART_SCRIPT="$SCRIPT_DIR/restart_otbr.sh"
+HEALTH_CHECK_SCRIPT="/usr/local/bin/check_otbr_health.sh"
+RESTART_SCRIPT="/usr/local/bin/restart_otbr.sh"
 LOG_FILE="/var/log/otbr_monitor.log"
 MAX_RETRY_COUNT=2
 
