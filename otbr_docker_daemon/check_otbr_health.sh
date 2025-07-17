@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -uxo pipefail
 
 LOG_FILE="/var/log/otbr_monitor.log"
 
@@ -32,7 +32,7 @@ check_otbr_network_data() {
     else
         exit_code=$?
     fi
-    
+
     if [ $exit_code -ne 0 ]; then
         log_message "ERROR" "ot-ctl command failed with exit code $exit_code"
         return 1
@@ -45,6 +45,14 @@ check_otbr_network_data() {
         prefixes_empty=false
     fi
 
+    local prefixes_content
+    prefixes_content=$(echo "$result" | sed -n '/^Prefixes:/,/^Routes:/p' | grep -v '^Prefixes:$' | grep -v '^Routes:$' | grep -v '^[[:space:]]*$')
+
+    local prefixes_valid=false
+    if [ "$(echo "$prefixes_content" | wc -l)" -eq 1 ] && echo "$prefixes_content" | grep -q "^fd11:22:0:0::/64 paros med a000$"; then
+        prefixes_valid=true
+    fi
+
     local routes_empty=true
     if echo "$result" | sed -n '/^Routes:/,/^Services:/p' | grep -v '^Routes:$' | grep -v '^Services:$' | grep -q '[[:alnum:]]'; then
         routes_empty=false
@@ -52,8 +60,8 @@ check_otbr_network_data() {
 
     log_message "DEBUG" "Prefixes empty: $prefixes_empty, Routes empty: $routes_empty"
 
-    if $prefixes_empty || $routes_empty; then
-        log_message "ERROR" "Critical network data missing"
+    if ! $prefixes_valid || ! $routes_empty; then
+        log_message "ERROR" "Critical network data missing or invalid"
         return 1
     else
         log_message "SUCCESS" "OTBR network data is healthy"

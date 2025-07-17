@@ -10,6 +10,7 @@ User=agsense
 Group=docker
 StandardOutput=journal
 StandardError=journal
+SuccessExitStatus=0 1 2
 
 [Install]
 WantedBy=multi-user.target

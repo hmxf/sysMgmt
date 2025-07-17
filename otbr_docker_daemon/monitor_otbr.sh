@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -uxo pipefail
 
 HEALTH_CHECK_SCRIPT="/usr/local/bin/check_otbr_health.sh"
 RESTART_SCRIPT="/usr/local/bin/restart_otbr.sh"
@@ -16,13 +16,13 @@ log_message() {
 
 main() {
     local retry_count=0
-    
+
     log_message "INFO" "Starting OTBR monitoring cycle..."
 
     while [ $retry_count -lt $MAX_RETRY_COUNT ]; do
         "$HEALTH_CHECK_SCRIPT"
         local health_result=$?
-        
+
         case $health_result in
             0)
                 log_message "SUCCESS" "OTBR is healthy"
@@ -49,14 +49,14 @@ main() {
     done
 
     log_message "ERROR" "All health checks failed, attempting restart..."
-    
+
     if "$RESTART_SCRIPT"; then
         log_message "INFO" "Restart completed, waiting for stabilization..."
         sleep 30
 
         "$HEALTH_CHECK_SCRIPT"
         local final_result=$?
-        
+
         if [ $final_result -eq 0 ]; then
             log_message "SUCCESS" "Container restart successful, OTBR is now healthy"
             return 0

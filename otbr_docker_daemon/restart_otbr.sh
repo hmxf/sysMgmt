@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -uxo pipefail
 
 LOG_FILE="/var/log/otbr_monitor.log"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -25,11 +25,8 @@ is_manually_stopped() {
 
 restart_container() {
     log_message "INFO" "Restarting OTBR container due to health check failure..."
-    
-    cd "$SCRIPT_DIR"
+    log_message "INFO" "Container restart initiated"
 
-    log_message "INFO" "Container restart initiated by health check failure"
-    
     if docker compose restart otbr; then
         log_message "INFO" "Container restarted successfully"
         sleep 15
