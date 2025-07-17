@@ -1,5 +1,11 @@
 #!/bin/bash
 
+set -euxo pipefail
+
+# Install and config Docker
+curl -sSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+
 # Enable IP forwarding on the host system
 ./setup_host.sh
 
@@ -10,14 +16,9 @@ docker pull openthread/border-router:latest
 docker compose up -d
 sleep 5
 
-# Configure the OTBR network settings
-#docker exec otbr bash /data/ot-net-conf.sh
-
-# Assign default host ipv6 address
-sudo ip -6 addr add fd11:22::1:1:1:2333 dev wpan0
-
 echo "OTBR Docker container is running in the background."
 echo "Use 'docker ps -a' to verify if container was running."
-echo "Use 'docker exec -it otbr /bin/bash' to access container."
 echo "Use 'docker exec -it otbr ot-ctl' to start ot-ctl CLI."
 echo "Use 'docker logs otbr' to view container logs."
+echo "Use 'commissioner start' to start the commissioner."
+echo "Use 'commissioner joiner add * J01NU5 600' to allow nodes joining for 60 seconds."

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euxo pipefail
+
 echo "Update system and install base packages:"
 
 # Configure software sources
@@ -15,10 +17,6 @@ sudo apt update -y && sudo apt update -y && sudo apt upgrade -y && sudo apt auto
 # Install necessary packages
 sudo apt upgrade -y raspberrypi-ui-mods
 sudo apt install -y gpiod python3-smbus python3-rpi.gpio screen
-
-# Install and config Docker
-curl -sSL https://get.docker.com | sh
-sudo usermod -aG docker $USER
 
 echo "Add system configurations:"
 
