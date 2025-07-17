@@ -1,0 +1,15 @@
+[Unit]
+Description=OTBR Health Check and Auto Restart Service
+After=docker.service
+Wants=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/monitor_otbr.sh
+User=agsense
+Group=docker
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

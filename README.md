@@ -62,3 +62,11 @@
         ```bash
         sudo ip -6 addr add fd11:22::1:1:1:2333 dev wpan0
         ```
+
+6. Install OTBR Monitor
+
+    ```bash
+    cd otbr_docker_daemon
+    chmod +x *.sh
+    ./install.sh
+    ```
