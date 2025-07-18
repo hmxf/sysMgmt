@@ -3,7 +3,6 @@
 set -uxo pipefail
 
 LOG_FILE="/var/log/otbr_monitor.log"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 log_message() {
     local level=$1
@@ -27,9 +26,32 @@ restart_container() {
     log_message "INFO" "Restarting OTBR container due to health check failure..."
     log_message "INFO" "Container restart initiated"
 
-    if docker compose -f /home/agsense/sysMgmt/config_otbr_docker/docker-compose.yaml restart; then
+    local compose_dir="/home/agsense/sysMgmt/config_otbr_docker"
+    local compose_file="$compose_dir/docker-compose.yaml"
+
+    if [ ! -f "$compose_file" ]; then
+        log_message "ERROR" "Docker compose file not found: $compose_file"
+        return 1
+    fi
+
+    if [ ! -f "$compose_dir/ot-net-conf.sh" ]; then
+        log_message "ERROR" "Script file not found: $compose_dir/ot-net-conf.sh"
+        return 1
+    fi
+
+    if [ ! -f "$compose_dir/otbr-env.list" ]; then
+        log_message "ERROR" "Environment list not found: $compose_dir/otbr-env.list"
+        return 1
+    fi
+
+    cd "$compose_dir" || {
+        log_message "ERROR" "Failed to change to docker-compose directory: $compose_dir"
+        return 1
+    }
+
+    if docker compose -f "$compose_file" restart; then
         log_message "INFO" "Container restarted successfully"
-        sleep 15
+        sleep 5
         return 0
     else
         log_message "ERROR" "Failed to restart container"
