@@ -31,7 +31,7 @@ main() {
             1)
                 retry_count=$((retry_count + 1))
                 log_message "WARNING" "Health check failed (attempt $retry_count/$MAX_RETRY_COUNT)"
-                
+
                 if [ $retry_count -lt $MAX_RETRY_COUNT ]; then
                     log_message "INFO" "Waiting 10 seconds before retry..."
                     sleep 10

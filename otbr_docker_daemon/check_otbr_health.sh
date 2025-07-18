@@ -71,7 +71,7 @@ check_otbr_network_data() {
 
 main() {
     log_message "INFO" "Starting OTBR health check..."
-    
+
     if ! check_container_running; then
         log_message "INFO" "OTBR container is not running (may be manually stopped)"
         return 2

@@ -27,6 +27,7 @@ restart_container() {
     log_message "INFO" "Restarting OTBR container due to health check failure..."
     log_message "INFO" "Container restart initiated"
 
+    cd /home/agsense/sysMgmt/config_otbr_docker
     if docker compose restart otbr; then
         log_message "INFO" "Container restarted successfully"
         sleep 15
