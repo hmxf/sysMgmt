@@ -16,7 +16,7 @@ sudo systemctl start x729-fan
 
 # Install x729-pwr.service
 sudo cp -f ./xPWR.sh /usr/local/bin/
-sudo cp -f x729-pwr.service /lib/systemd/system
+sudo cp -f ./x729-pwr.service /lib/systemd/system
 sudo systemctl daemon-reload
 sudo systemctl enable x729-pwr
 sudo systemctl start x729-pwr
