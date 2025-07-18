@@ -20,6 +20,9 @@ sudo apt install -y gpiod python3-smbus python3-rpi.gpio screen
 
 echo "Add system configurations:"
 
+# Configure Git
+git config --global core.fileMode false
+
 # Fetch boot configs
 SYSTEM_CONFIG=$(grep "dtoverlay" /boot/firmware/config.txt)
 
