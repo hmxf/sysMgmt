@@ -60,7 +60,7 @@ check_otbr_network_data() {
 
     log_message "DEBUG" "Prefixes empty: $prefixes_empty, Routes empty: $routes_empty"
 
-    if ! $prefixes_valid || ! $routes_empty; then
+    if ! $prefixes_valid || $routes_empty; then
         log_message "ERROR" "Critical network data missing or invalid"
         return 1
     else
