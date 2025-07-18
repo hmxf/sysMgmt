@@ -25,13 +25,14 @@
 
         ```bash
         cd sysMgmt/config_otbr_docker && chmod +x *.sh
-        ./install_otbr_docker.sh
+        ./install_docker.sh
         sudo init 6
         ```
     
-        After system started, use below command to use OTBR.
+        After system started, use below command to start OTBR docker.
 
         ```bash
+        ./install_otbr_docker.sh
         docker ps -a
         docker logs otbr
         docker exec -it otbr ot-ctl
