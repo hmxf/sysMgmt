@@ -7,7 +7,12 @@
 set -euxo pipefail
 
 # Install x729-fan.service
-sed -i 's/pwmchip0/pwmchip2/g' x729-fan.sh
+
+# Since Raspberry Pi finally unified the PWM chip to pwmchip0 on Raspberry Pi 0/1/2/3/4/5, now we can use pwmchip0 directly.
+# If you are using an old version of Raspberry Pi OS on Raspberry Pi 5, you may need to change pwmchip0 to pwmchip2 in the x729-fan.sh script, uncomment the following line to change pwmchip0 to pwmchip2.
+# Verify the current PWM chip by running `ls -la /sys/class/pwm/` command.
+#sed -i 's/pwmchip0/pwmchip2/g' x729-fan.sh
+
 sudo cp -f ./x729-fan.sh /usr/local/bin/
 sudo cp -f ./x729-fan.service /lib/systemd/system
 sudo systemctl daemon-reload
