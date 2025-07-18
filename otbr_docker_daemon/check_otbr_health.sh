@@ -21,7 +21,7 @@ check_container_running() {
 
 check_otbr_network_data() {
     log_message "INFO" "Checking OTBR network data..."
-    
+
     local result
     local exit_code
 
@@ -49,7 +49,7 @@ check_otbr_network_data() {
     prefixes_content=$(echo "$result" | sed -n '/^Prefixes:/,/^Routes:/p' | grep -v '^Prefixes:$' | grep -v '^Routes:$' | grep -v '^[[:space:]]*$')
 
     local prefixes_valid=false
-    if [ "$(echo "$prefixes_content" | wc -l)" -eq 1 ] && echo "$prefixes_content" | grep -q "^fd11:22:0:0::/64 paros med a000$"; then
+    if [ "$(echo "$prefixes_content" | wc -l)" -eq 1 ] && echo "$prefixes_content" | grep -q "^fd11:22:0:0::/64 paros med "; then
         prefixes_valid=true
     fi
 
@@ -58,10 +58,19 @@ check_otbr_network_data() {
         routes_empty=false
     fi
 
-    log_message "DEBUG" "Prefixes empty: $prefixes_empty, Routes empty: $routes_empty"
+    log_message "DEBUG" "Prefixes empty: $prefixes_empty, Prefixes valid: $prefixes_valid, Routes empty: $routes_empty"
 
-    if ! $prefixes_valid || $routes_empty; then
-        log_message "ERROR" "Critical network data missing or invalid"
+    if $routes_empty; then
+        log_message "INFO" "Routes are empty"
+    fi
+
+    if $prefixes_empty; then
+        log_message "ERROR" "Network Prefix missing"
+        return 1
+    fi
+
+    if ! $prefixes_valid; then
+        log_message "ERROR" "Network Prefix invalid"
         return 1
     else
         log_message "SUCCESS" "OTBR network data is healthy"

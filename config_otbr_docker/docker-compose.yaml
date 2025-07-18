@@ -11,5 +11,5 @@ services:
     volumes:
       - /var/lib/otbr:/data
     env_file:
-      - otbr-env.list
+      - /home/agsense/sysMgmt/config_otbr_docker/otbr-env.list
     restart: always
