@@ -1,0 +1,15 @@
+[Unit]
+Description=Container Restart Monitor Service
+After=network.target docker.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/container_monitor.sh
+Restart=always
+RestartSec=10
+User=root
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
