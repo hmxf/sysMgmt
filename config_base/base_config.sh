@@ -23,6 +23,27 @@ echo "Add system configurations:"
 # Configure Git
 git config --global core.fileMode false
 
+# Configure SSH
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDhrz08zBncpapwt2jxVhg4UVR18fpHDpSKSe1EdB87x81QQxiZxN3j46q6S1hjoOsaq7GgAKsk0F7DLHSMakcyxU6IuC1xBym7c+cqjx3zcUHmDLZw89YyOGWjdNt6cTPsR7oX46nClAqbAxP5aaqxPZeyy/Zok/PR1Ag7VK+1BIfO5tAiHMfzdgKFt4YSkmhTDYUTSJ6qN2oFy9zYu2HdgMGEuF5CHooKVFZnLJrnfuCpejlIJnLnFYtBQpEdhHvAzTIhZOfqwJWNp1g3KFTla7hFcD73fNbctFjpFm0mzkjdWRu4WqG/RPcNcOgJYq3ljzhKw5fJXAi9tL9eBpCo9uW92iZ1XMkZtAkBA52A7rifICluvqL07kYxy8luAe6WyvhqKxE8Ke8s8jKvZ8QlM5Cbp0ihRW0WDMBxNzV+/RpDzOP3SLtHP/rV1fq1Z2vMsmhDGxHrLMcHTM94Rp8/jcfbEnafoeki9GnUAl+u+WRQWtIy/rm/lD6rZs46nWU= AgSense-MainStation" > ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+sudo sed -i -E \
+    -e '/^[[:space:]]*#?[[:space:]]*PermitRootLogin[[:space:]]/{
+        s/^[[:space:]]*#?[[:space:]]*PermitRootLogin[[:space:]].*/PermitRootLogin no/
+    }' \
+    -e '/^[[:space:]]*#?[[:space:]]*PubkeyAuthentication[[:space:]]/{
+        s/^[[:space:]]*#?[[:space:]]*PubkeyAuthentication[[:space:]].*/PubkeyAuthentication yes/
+    }' \
+    -e '/^[[:space:]]*#?[[:space:]]*AuthorizedKeysFile[[:space:]]/{
+        s/^[[:space:]]*#?[[:space:]]*AuthorizedKeysFile[[:space:]].*/AuthorizedKeysFile      .ssh\/authorized_keys/
+    }' \
+    -e '/^[[:space:]]*#?[[:space:]]*PasswordAuthentication[[:space:]]/{
+        s/^[[:space:]]*#?[[:space:]]*PasswordAuthentication[[:space:]].*/PasswordAuthentication no/
+    }' \
+    /etc/ssh/sshd_config
+sudo systemctl restart ssh.service
+
 # Fetch boot configs
 SYSTEM_CONFIG=$(grep "dtoverlay" /boot/firmware/config.txt)
 
