@@ -92,9 +92,53 @@ while true; do
         log "WARNING" "Container restarted more than $RESTART_THRESHOLD times in 5 minutes, triggering recovery process"
         restart_docker
         sleep 10
+
         if wait_container_running; then
-            log "SUCCESS" "Container recovered after Docker restart, reset counter"
-            RESTART_HISTORY=()
+            log "SUCCESS" "Container is running after Docker restart, continue monitoring for further restarts"
+
+            RECOVERY_START=$(date +%s)
+
+            while true; do
+                sleep $CHECK_INTERVAL
+                CURRENT_RESTART_COUNT=$(get_restart_count)
+
+                if [ -z "$CURRENT_RESTART_COUNT" ]; then
+                    log "WARNING" "Failed to get container restart count, container may have been removed"
+                    continue
+                fi
+
+                if [ "$CURRENT_RESTART_COUNT" -gt "$LAST_RESTART_COUNT" ]; then
+                    DIFF=$((CURRENT_RESTART_COUNT - LAST_RESTART_COUNT))
+                    for ((i=0; i<DIFF; i++)); do
+                        RESTART_HISTORY+=("$(date +%s)")
+                    done
+                    log "INFO" "Detected $DIFF container restarts, total restarts: $CURRENT_RESTART_COUNT"
+                    LAST_RESTART_COUNT=$CURRENT_RESTART_COUNT
+                fi
+
+                NOW=$(date +%s)
+                NEW_HISTORY=()
+
+                for t in "${RESTART_HISTORY[@]}"; do
+                    if [ $((NOW - t)) -le $TIME_WINDOW ]; then
+                        NEW_HISTORY+=("$t")
+                    fi
+                done
+
+                RESTART_HISTORY=("${NEW_HISTORY[@]}")
+
+                if [ "${#RESTART_HISTORY[@]}" -ge "$RESTART_THRESHOLD" ]; then
+                    log "ERROR" "Container still restarts more than $RESTART_THRESHOLD times after Docker restart, rebooting system"
+                    reboot_system
+                    exit 0
+                fi
+
+                if [ $((NOW - RECOVERY_START)) -ge $TIME_WINDOW ]; then
+                    log "SUCCESS" "Container stable after Docker restart, reset counter"
+                    RESTART_HISTORY=()
+                    break
+                fi
+            done
         else
             reboot_system
             exit 0

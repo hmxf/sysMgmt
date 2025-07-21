@@ -4,12 +4,13 @@ set -euxo pipefail
 
 sudo mkdir -p /var/log
 sudo touch /var/log/otbr_monitor.log
+sudo touch /var/log/container_monitor.log
 sudo chown $USER:$USER /var/log/otbr_monitor.log
 
 sudo cp ./check_otbr_health.sh /usr/local/bin
 sudo cp ./monitor_otbr.sh /usr/local/bin
 sudo cp ./restart_otbr.sh /usr/local/bin
-sudo cp ./container-monitor.sh /usr/local/bin
+sudo cp ./container_monitor.sh /usr/local/bin
 
 sudo cp ./otbr-monitor.service /etc/systemd/system/
 sudo cp ./otbr-monitor.timer /etc/systemd/system/
