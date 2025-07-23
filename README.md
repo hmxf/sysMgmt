@@ -16,7 +16,7 @@
 
     ```bash
     cd sysMgmt/config_x729 && chmod +x *.sh
-    ./sys_config.sh
+    ./x729_config.sh
     sudo init 6
     ```
 4. Choose ONE of below to Install OTBR.
