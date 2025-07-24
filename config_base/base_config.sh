@@ -20,6 +20,9 @@ sudo apt install -y gpiod python3-smbus python3-rpi.gpio screen
 
 echo "Add system configurations:"
 
+# Configure sudoers for agsense user
+echo "agsense ALL=(ALL:ALL) NOPASSWD: ALL" | sudo EDITOR=tee visudo -f /etc/sudoers.d/agsense
+
 # Configure Git
 git config --global core.fileMode false
 
